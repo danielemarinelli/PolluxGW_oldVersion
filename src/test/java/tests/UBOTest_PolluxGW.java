@@ -197,7 +197,7 @@ public class UBOTest_PolluxGW extends TestBase{
     }
     //  13 tests with old pollux version ----- END TEST WITH OLD VERSION
     //########################################################
-
+    //STARTS TESTS WITH NEW VERSION
     //@Test(priority=14, description="Renaming old and new PolluxGateway versions in the UNITAM SW folder")
     public void verifyDownloadNewPolluxApp() throws Exception {
         cp = new CopyFiles();
@@ -233,11 +233,12 @@ public class UBOTest_PolluxGW extends TestBase{
         System.out.println(".......DELETING FileMaster_OLD folder........");
         int f = files.removeDirectory(new File("C:\\UNITAM\\FileMaster_OLD"));
         System.out.println("@@@ Deleted FileMaster_OLD folder @@@");
-        //System.out.println(".......DELETING PolluxFromPanelTPI_OLD folder........");
-        //int p = files.removeDirectory(new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\FromPanelData\\PolluxFromPanelTPI_OLD"));
+        System.out.println(".......DELETING PolluxFromPanelTPI_OLD folder........");
+        int p = files.removeDirectory(new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\FromPanelData\\PolluxFromPanelTPI_OLD"));
         //int t = files.removeFilesFromTestDirectoryOld();
-        //Assert.assertEquals(f+p,2);
-        Assert.assertEquals(f,1);
+        files.removeDirectory(new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\_origFromPanelData"));
+        Assert.assertEquals(f+p,2);
+        //Assert.assertEquals(f,1);
     }
 
     //@Test(priority=17, description="Open File Master application in ADMIN MODE")
