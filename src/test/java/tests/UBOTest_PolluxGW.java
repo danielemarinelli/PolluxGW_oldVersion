@@ -193,7 +193,7 @@ public class UBOTest_PolluxGW extends TestBase{
         //Assert.assertTrue(getDriverLC().getWindowHandles().size()>0,"LC closed by error");
         tearDownLC_WD();  //closing LC too
         message();
-        Assert.assertTrue(getDriverLC().getWindowHandles().size()==0,"LC still open, got to close it");
+        Assert.assertTrue(getDriverLC().getWindowHandles().size()==0,"LC still open, got to close it manually! Start regression with new version. ");
     }
     //  13 tests with old pollux version ----- END TEST WITH OLD VERSION
     //########################################################
