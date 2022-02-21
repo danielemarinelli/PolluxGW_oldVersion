@@ -20,7 +20,7 @@ public class ReproductionAgent extends TestBase {
 
     public ReproductionAgent(WindowsDriver driverWinRA){this.driverWinRA = driverWinRA;}
 
-    public void setJobRepAgent() throws Exception {
+    public String setJobRepAgent() throws Exception {
         System.out.println("Inside Reproduction Agent");
         pickDateToReproduceFromFile = excelUserData.getPolluxGWDataFromFile();
         Thread.sleep(1000);
@@ -51,25 +51,22 @@ public class ReproductionAgent extends TestBase {
         driverWinRA.findElementByAccessibilityId("JobMonitorExecuteButton").click();
         Thread.sleep(3000);
         //checkIfProcessIsComplete();
-        checkIfJobsProcessIsCompleted();
+        String endJobs = checkIfJobsProcessIsCompleted();
         String s = driverWinRA.findElementByAccessibilityId("JobMonitorCurrentJobProductionMonitorCounterLabel").getText();
         System.out.println(s);
         takeAppSnap(driverWinRA,title[0]+"_END");
+        return endJobs;
     }
 
-    private void checkIfJobsProcessIsCompleted() throws Exception {
+    private String checkIfJobsProcessIsCompleted() throws Exception {
         pickDateToReproduceFromFile = excelUserData.getPolluxGWDataFromFile();
         int s = 0;
         String jobs = driverWinRA.findElementByAccessibilityId("JobMonitorCurrentJobProductionMonitorCounterLabel").getText();
         String[] splitJobs = jobs.split(" ");
         int totalJobsRunning = Integer.parseInt(splitJobs[4]);
-        System.out.println("@@@@@@ Reproduction Agent Process running. Waiting till it's over (3 mins...) @@@@@@");
+        System.out.println("@@@@@@ This operation might take a few minutes to complete. Please be patient @@@@@@");
         Thread.sleep(100000); //wait 2mins
         do {
-             /*if(driverWinRA.findElementByName("Reproduction Wizard - Process Complete").isDisplayed()){
-                    System.out.println("@@@@@@  Reproduction Agent Process COMPLETED  @@@@@@");
-                    break;
-                }  */
             try{
                 s = Objects.requireNonNull(new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\FromPanelData\\PolluxFromPanelTPI\\" + pickDateToReproduceFromFile.get(0).get("StartYear").replace(".0", "") + "\\" + pickDateToReproduceFromFile.get(0).get("StartMonth").replace(".0", "") + "\\" + pickDateToReproduceFromFile.get(0).get("StartDay").replace(".0", "")).list()).length;
             } catch (Exception e) {
@@ -78,7 +75,10 @@ public class ReproductionAgent extends TestBase {
                 Thread.sleep(30000);  // 30sec
             }
         }while(s!=totalJobsRunning);
-
+        if(driverWinRA.findElementByName("Reproduction Wizard - Process Complete").isDisplayed()){
+                    System.out.println("@@@@@@  Reproduction Agent Process COMPLETED  @@@@@@");
+                }
+        return driverWinRA.findElementByName("Reproduction Wizard - Process Complete").getText();
     }
 
     private void checkIfProcessIsComplete() {
