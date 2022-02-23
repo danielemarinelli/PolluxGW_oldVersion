@@ -174,9 +174,11 @@ public class UBOTest_PolluxGW extends TestBase{
         switchToWindowRFAS(getDriverRFAS());
         tearDownRFAS();
         System.out.println("RFAS closed...");
+        Thread.sleep(500);
         switchToWindowSV(getDriverSV());
         tearDownSV();
         System.out.println("System View closed...");
+        Thread.sleep(500);
         switchToWindowRA();
         tearDownReproAgent();
         System.out.println("Reproduction Agent closed...");
@@ -184,6 +186,7 @@ public class UBOTest_PolluxGW extends TestBase{
         switchToWindowFM(getDriverFM());
         tearDownFM();
         System.out.println("FM closed...");
+        Thread.sleep(500);
         switchToWindowPolluxGW();
         tearDownPolluxGW();
         System.out.println("--->> PolluxGW closed and waiting that all apps processes have been killed");
