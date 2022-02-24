@@ -292,7 +292,10 @@ public class TestBase {
 
         public void tearDownFM() throws Exception {
         driverWinFM.close();
-            for (int i = 0; i < 2; i++) { driverWinFM.findElementByName("Yes").click(); }
+            for (int i = 0; i < 2; i++) {
+                Thread.sleep(500);
+                driverWinFM.findElementByName("Yes").click();
+            }
             Thread.sleep(5000);
         }
 
@@ -310,7 +313,7 @@ public class TestBase {
     //@AfterSuite
     public void tearDownRFAS() {
             driverWinRFAS.close();
-            for (int i = 0; i < 2; i++) { driverWinRFAS.findElementByName("Yes").click(); }
+            for (int i = 0; i < 2; i++) { driverWinRFAS.findElementByName("Yes").click();}
     }
 
     public void tearDownReproAgent() throws InterruptedException {
