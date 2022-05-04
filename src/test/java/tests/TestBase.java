@@ -47,6 +47,8 @@ public class TestBase {
     private WindowsDriver driverWinSV=null;
     private WindowsDriver driverUnitamSW=null;
     private WindowsDriver driverWinReproductionAgent;
+    private WindowsDriver driverWinPublisher=null;
+    private WindowsDriver driverWinPS=null;
     private TestReporter reporter;
     String date = null;
     String RAWinHandleHex = null;
@@ -190,6 +192,30 @@ public class TestBase {
         }
     }
 
+    public final void attachDriverToPublisher() {
+        try{
+            appTitlesFromFile = excelUserData.getAppFoldersFromFile();
+            DesiredCapabilities desktopCapabilities = new DesiredCapabilities();
+            desktopCapabilities.setCapability("platformName", "Windows");
+            desktopCapabilities.setCapability("deviceName", "WindowsPC");
+            desktopCapabilities.setCapability("app", "Root");
+            WindowsDriver desktopSession = new WindowsDriver(new URL("http://127.0.0.1:4723/"), desktopCapabilities);
+            DesiredCapabilities PubCapabilities = new DesiredCapabilities();
+            PubCapabilities.setCapability("platformName", "Windows");
+            PubCapabilities.setCapability("deviceName", "WindowsPC");
+            WebElement pub = desktopSession.findElementByName(appTitlesFromFile.get(0).get("PublisherTitle"));
+            String PGWinHandleStr = pub.getAttribute("NativeWindowHandle");
+            int PubWinHandleInt = Integer.parseInt(PGWinHandleStr);
+            String PubWinHandleHex = Integer.toHexString(PubWinHandleInt);
+            PubCapabilities.setCapability("appTopLevelWindow", PubWinHandleHex);
+            System.out.println("Publisher Handle is: " + PubWinHandleHex);
+            driverWinPublisher = new WindowsDriver(new URL("http://127.0.0.1:4723/"), PubCapabilities);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Something went wrong opening Publisher in Admin mode....");
+        }
+    }
+
     public final void attachDriverToNewPolluxGatewayVersion() {
         try{
             appTitlesFromFile = excelUserData.getAppFoldersFromFile();
@@ -258,6 +284,22 @@ public class TestBase {
         driverWinSV.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
+    public final void setUpPolluxSimulator() {
+        DesiredCapabilities PS = new DesiredCapabilities();
+        PS.setCapability("app", "C:\\UNITAM SW\\TOOLS\\PolluxSimulator.exe");
+        PS.setCapability("platformName", "Windows_PSimulator");
+        PS.setCapability("deviceName", "WindowsPC_PSimulator");
+        try {
+            driverWinPS = new WindowsDriver(new URL("http://127.0.0.1:4723/"), PS);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Set<String> windowsPS = driverWinPS.getWindowHandles();
+        Assert.assertNotNull(driverWinPS,"PolluxSimulator didn't open");
+        System.out.println("PS handler: "+windowsPS);
+        driverWinPS.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    }
+
     public final void setUpReproductionAgent()  {
         DesiredCapabilities RA = new DesiredCapabilities();
         RA.setCapability("ms:waitForAppLaunch",15);
@@ -275,6 +317,7 @@ public class TestBase {
 
     }
 
+    public WindowsDriver getDriverPublisher() { return driverWinPublisher;}
     public WindowsDriver getDriverPolluxGW() { return driverWinPolluxGW;}
     public WindowsDriver getDriverLC() { return driverWinLC;}
     public WindowsDriver getDriverFM() { return driverWinFM;}
@@ -282,22 +325,30 @@ public class TestBase {
     public WindowsDriver getDriverWinMerge() { return driverWinMerge;}
     public WindowsDriver getDriverSV() { return driverWinSV;}
     public WindowsDriver getDriverRA() { return driverWinReproductionAgent;}
-    public WindowsDriver getDriverUnitamSW(){ return driverUnitamSW;}
+    public WindowsDriver getDriverPS(){ return driverWinPS;}
 
-        public void tearDownSA() {
+    public void tearDownSA() {
         driverWinSA.close();
         driverWinSA.findElementByName("Yes").click();
     }
 
-
-        public void tearDownFM() throws Exception {
+    public void tearDownFM() throws Exception {
         driverWinFM.close();
             for (int i = 0; i < 2; i++) {
                 Thread.sleep(500);
                 driverWinFM.findElementByName("Yes").click();
             }
             Thread.sleep(5000);
+    }
+
+    public void tearDownPublisher() throws Exception {
+        driverWinPublisher.close();
+        for (int i = 0; i < 2; i++) {
+            Thread.sleep(500);
+            driverWinPublisher.findElementByName("Yes").click();
         }
+        Thread.sleep(5000);
+    }
 
     @AfterMethod(groups={"new_PolluxGateway","old_PolluxGateway"})
     public void testDone(){System.out.println("##########Test is over, proceed with next one...");}
@@ -321,6 +372,11 @@ public class TestBase {
         driverWinReproductionAgent.close();
         driverWinReproductionAgent.findElementByName("Yes").click();
     }
+
+    public void tearDownPolluxSimulator() throws InterruptedException {
+        driverWinPS.close();
+        driverWinPS.findElementByName("Yes").click();
+}
 
     public void tearDownPolluxGW() {
         driverWinPolluxGW.close();
@@ -386,7 +442,7 @@ public class TestBase {
         }
     }
 
-    public void switchToWindowPublisher(WindowsDriver driverWinPub) {
+    public void switchToWindowPublisher(WindowsDriver driverWinPublisher) {
         Set<String> windows = driverWinPub.getWindowHandles();
         for(String w : windows) {
             driverWinPub.switchTo().window(w);

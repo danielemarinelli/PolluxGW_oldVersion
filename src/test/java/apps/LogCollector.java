@@ -4,14 +4,10 @@ import io.appium.java_client.windows.WindowsDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import tests.TestBase;
-
 import java.io.IOException;
 import java.util.List;
 
 public class LogCollector extends TestBase {
-
-    //WindowsDriver driverWinLC;
-    //public LogCollector(WindowsDriver driverWinLC){ this.driverWinLC = driverWinLC; }
 
     public void get_LC_Picture(WindowsDriver driverWinLC) throws IOException {
         String title[] = driverWinLC.getTitle().split(" ");
@@ -102,4 +98,39 @@ public class LogCollector extends TestBase {
         Thread.sleep(2000);
     }
 
+    public void launchPublisherInAdminMode(WindowsDriver driverLC) throws Exception {
+        WebElement pub = driverLC.findElementByName("Publisher");
+        Actions actions = new Actions(driverLC);
+        if(pub.isDisplayed()) {
+            actions.contextClick(pub).perform();
+            System.out.println("right click on Publisher");
+            actions.moveToElement(driverLC.findElementByName("Start")).click().build().perform();
+            driverLC.findElementByName("Yes").click();
+            System.out.println("started Publisher in Admin mode...");
+        }else {  // ==>> NOT all apps are visible inside the LC window
+            for (int i = 0; i < 30; i++) {
+                driverLC.findElementByName("Line down").click();
+                if(pub.isDisplayed()){
+                    driverLC.findElementByName("Line down").click();
+                    break;}
+            }
+            actions.contextClick(pub).perform();
+            System.out.println("right click on Publisher");
+            actions.moveToElement(driverLC.findElementByName("Start")).click().build().perform();
+            driverLC.findElementByName("Yes").click();
+            System.out.println("started Publisher in Admin mode...");
+        }
+        Thread.sleep(5000);
+    }
+
+    public String appTitlePublisher(WindowsDriver driverPublisher) throws Exception{
+        String title[] = driverPublisher.getTitle().split(" ");
+        System.out.println(driverPublisher.getTitle());
+        takeAppSnap(driverPublisher, title[0]);
+        return title[0];
+    }
+
+    public void launchPolluxSimulatorInAdminMode(WindowsDriver driverLC) {
+
+    }
 }

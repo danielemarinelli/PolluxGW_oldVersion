@@ -180,9 +180,25 @@ public class FilesActions extends TestBase {
         if (sourceFile.renameTo(destFile)) {
             System.out.println("Directory FileMaster renamed successfully in FileMaster_OLD");
         } else {
-            System.out.println("########## FAILED to rename directory in FileMaster_OLD because folder is already present #########");
+            System.out.println("########## FAILED to rename directory in FileMaster_OLD because folder is already present or folder is open #########");
         }
         Thread.sleep(12000);
+    }
+
+    public void renameToPanelSettingsAndLastPlxToPanelFolders() throws Exception {
+        Thread.sleep(5000);
+        File sourceFile = new File("C:\\UNITAM\\FileMaster\\Files\\HHSettings\\ToPanel\\Settings");
+        File destFile = new File("C:\\UNITAM\\FileMaster\\Files\\HHSettings\\ToPanel\\Settings_OLD");
+        if (sourceFile.renameTo(destFile)) {System.out.println("Directory ToPanelSettings renamed successfully in Settings_OLD");}
+        else {System.out.println("########## FAILED to rename directory in Settings_OLD because folder is already present or folder is open #########");}
+        File sourceLastPlxToPanel = new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\ToPanelData\\LastPlxToPanel");
+        File destLastPlxToPanel = new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\ToPanelData\\LastPlxToPanel_OLD");
+        if (sourceLastPlxToPanel.renameTo(destLastPlxToPanel)) {
+            System.out.println("Directory LastPlxToPanel renamed successfully in LastPlxToPanel_OLD");
+        } else {
+            System.out.println("########## FAILED to rename directory in LastPlxToPanel_OLD because folder is already present or folder is open #########");
+        }
+        Thread.sleep(2000);
     }
 
     public void removeDirectory() {
@@ -261,7 +277,6 @@ public class FilesActions extends TestBase {
         } else {System.out.println("########## FAILED to rename directory in _origFromPanelData because folder is already present #########");}
     */
     }
-
 
     public void renamePolluxFromPanelTPIFolder() throws Exception {
         Thread.sleep(3000);

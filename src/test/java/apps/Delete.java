@@ -37,6 +37,9 @@ public class Delete extends TestBase {
         File oldFromPanelData = new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\_origFromPanelData");
         if (!oldFromPanelData.exists()){oldFromPanelData.mkdirs();}
         FileUtils.cleanDirectory(oldFromPanelData);
+        File oldLastPlxToPanel = new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\ToPanelData\\LastPlxToPanel");
+        if (!oldLastPlxToPanel.exists()){oldLastPlxToPanel.mkdirs();}
+        FileUtils.cleanDirectory(oldLastPlxToPanel);
         System.out.println("All folders are empty");
         int n = Objects.requireNonNull(new File(app_folders.get(0).get("NewFolderPolluxApp")).list()).length;
         int o = Objects.requireNonNull(new File(app_folders.get(0).get("OldFolderPolluxApp")).list()).length;
@@ -44,7 +47,8 @@ public class Delete extends TestBase {
         int e = Objects.requireNonNull(new File(app_folders.get(0).get("oldExe")).list()).length;
         int p = Objects.requireNonNull(new File(app_folders.get(0).get("screenShots")).list()).length;
         int s = Objects.requireNonNull(new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\FromPanelData").list()).length;
-        return n+o+s+r+e+p;
+        int lp = Objects.requireNonNull(new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\ToPanelData\\LastPlxToPanel").list()).length;
+        return n+o+s+r+e+p+lp;
     }
 
 

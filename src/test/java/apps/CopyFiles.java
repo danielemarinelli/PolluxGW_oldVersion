@@ -73,7 +73,7 @@ public class CopyFiles extends TestBase {
         if (!ChannelCode.exists()){
             ChannelCode.mkdir();
         }
-        ProcessBuilder ps = new ProcessBuilder("xcopy",app_new_vers.get(0).get("ChannelCode"), "C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\ChannelCode");
+        ProcessBuilder ps = new ProcessBuilder("xcopy", "C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\ChannelCode",app_new_vers.get(0).get("ChannelCode"));
         ps.redirectErrorStream(true);
         Process pr = ps.start();
         BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
@@ -90,7 +90,7 @@ public class CopyFiles extends TestBase {
         app_new_vers = excelUserData.getPolluxGWDataFromFile();
         File SkyExceptions = new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\SkyExceptions");
         if (!SkyExceptions.exists()){SkyExceptions.mkdir();}
-        ProcessBuilder ps = new ProcessBuilder("xcopy",app_new_vers.get(0).get("SkyExceptions"), "C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\SkyExceptions");
+        ProcessBuilder ps = new ProcessBuilder("xcopy", "C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\SkyExceptions",app_new_vers.get(0).get("SkyExceptions"));
         ps.redirectErrorStream(true);
         Process pr = ps.start();
         BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
@@ -107,7 +107,7 @@ public class CopyFiles extends TestBase {
         app_new_vers = excelUserData.getPolluxGWDataFromFile();
         File NTACode = new File("C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\NTACode");
         if (!NTACode.exists()){NTACode.mkdir();}
-        ProcessBuilder ps = new ProcessBuilder("xcopy",app_new_vers.get(0).get("NTACode"), "C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\NTACode");
+        ProcessBuilder ps = new ProcessBuilder("xcopy", "C:\\UNITAM\\PolluxGateway\\Panel_0\\Files\\NTACode",app_new_vers.get(0).get("NTACode"));
         ps.redirectErrorStream(true);
         Process pr = ps.start();
         BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
@@ -120,5 +120,21 @@ public class CopyFiles extends TestBase {
         return true;
     }
 
+    public boolean copyFilesFromToPanelSettingsFolderToOldTestFolder() throws Exception {
+        app_new_vers = excelUserData.getFoldersNamesFromExcelSheet();
+        File theDir = new File("C:\\UNITAM\\FileMaster\\Files\\HHSettings\\ToPanel\\Settings");
+        if (!theDir.exists()){theDir.mkdirs();}
+        ProcessBuilder ps = new ProcessBuilder("xcopy", "C:\\UNITAM\\FileMaster\\Files\\HHSettings\\ToPanel\\Settings",app_new_vers.get(0).get("OldFolderApp"));
+        ps.redirectErrorStream(true);
+        Process pr = ps.start();
+        BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+        String line;
+        while ((line = in.readLine())  != null) {
+            System.out.println(line);}
+        pr.waitFor();
+        System.out.println("ok! ToPanel Files copied under C:\\TEST Old Folder");
+        in.close();
+        return true;
+    }
 
 }
