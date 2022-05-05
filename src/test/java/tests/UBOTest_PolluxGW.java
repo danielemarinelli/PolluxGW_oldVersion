@@ -192,7 +192,7 @@ public class UBOTest_PolluxGW extends TestBase{
     }
 
     @Test(priority=15, description="Copying files from ToPanelSettings to a Test folder for compare of old version")
-    public void copyPanelSettingsFilesToOldTestVersionFolder() throws Exception {
+    public void copyPanelSettingsFilesToOldTestVersionFolder_OLD() throws Exception {
         System.out.println("Copy generated ToPanel\\Settings to Test folder");
         cp = new CopyFiles();
         boolean s = cp.copyFilesFromToPanelSettingsFolderToOldTestFolder();
@@ -219,9 +219,6 @@ public class UBOTest_PolluxGW extends TestBase{
             switchToWindowSV(getDriverSV());
             sv = new SystemView(getDriverSV());
             title_sv = sv.displayPolluxGWLogs();
-            //title_sv = sv.mixerSnapShotWithOldVersion();
-            //lc = new LogCollector();
-            //lc.get_LC_Picture(getDriverLC());
         } catch (Exception e) {
             e.printStackTrace();
         }
